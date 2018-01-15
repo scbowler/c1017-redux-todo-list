@@ -1,14 +1,19 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { getItems } from '../actions';
+import ListItem from './list_item';
 
 class List extends Component{
+
+    componentDidMount(){
+        this.props.getItems();
+    }
+
     render(){
 
-        console.log('List Props:', this.props);
-
         const listItems = this.props.list.map( (item, index) => {
-            return <li key={index} className="list-group-item">{item.title}</li>
+            return <ListItem key={index} {...item}/>
         });
 
         return (
@@ -17,7 +22,7 @@ class List extends Component{
                     <Link to="/add-item" className="btn btn-outline-primary">Add To Do Item</Link>
                 </div>
                 <h1 className="text-center">To Do List</h1>
-                <ul className="list-group">
+                <ul className="list-group container">
                     {listItems}
                 </ul>
             </div>
@@ -31,4 +36,4 @@ function mapStateToProps(state){
     }
 }
 
-export default connect(mapStateToProps)(List);
+export default connect(mapStateToProps, { getItems })(List);
